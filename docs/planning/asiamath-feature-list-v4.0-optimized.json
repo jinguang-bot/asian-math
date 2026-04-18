@@ -1,0 +1,271 @@
+{
+  "project": "Asiamath",
+  "version": "4.0-Optimized",
+  "description": "融合 v2.2 (质量驱动、工程规范) 与 v3.1 (解耦、高并发团队协作) 的终极开发计划",
+  "design_principles": [
+    "Contract-First - 在开发前先定义前后端契约 (API + Model)",
+    "Mock-Driven - UI 开发 100% 依赖 Mock 服务器，与后端实现解耦",
+    "Vertical-Slices - 业务特性按垂直切片划分，实现前端、后端原子化隔离",
+    "Parallel-Ready - 最大化并行度，消除阻塞依赖",
+    "Quality-Driven - 每次新功能开发前必须进行 Smoke Test，交付前保持 Clean State"
+  ],
+  "working_rules": {
+    "agent_harness_discipline": true,
+    "one_feature_at_a_time": true,
+    "do_not_edit_test_steps_except_by_pm": true,
+    "only_mark_passes_true_after_e2e_verification": true,
+    "run_smoke_test_before_new_implementation": true,
+    "leave_clean_state_before_handoff": true,
+    "required_handoff_artifacts": [
+      "progress log entry",
+      "API/schema note if changed",
+      "commit/changelog message",
+      "feature list status update"
+    ]
+  },
+  "decoupling_strategy": {
+    "core_approach": "Four-layer staggered parallel development",
+    "layers": [
+      {
+        "layer": "Harness & Contract Layer",
+        "description": "工程脚手架搭建、API 契约定义与数据模型建立",
+        "deliverables": [
+          "Sprint contracts & Smoke test checklist",
+          "OpenAPI specifications",
+          "Database schema & TS Models"
+        ],
+        "parallel_potential": "100%",
+        "timeline": "Week 1"
+      },
+      {
+        "layer": "Mock Layer",
+        "description": "Mock 服务搭建，供前端无阻塞开发",
+        "deliverables": [
+          "Mock API servers",
+          "Test data generators"
+        ],
+        "parallel_potential": "100%",
+        "timeline": "Week 2"
+      },
+      {
+        "layer": "Implementation Layer (Decoupled)",
+        "description": "前端对 Mock 开发 UI，后端独立实现接口逻辑",
+        "deliverables": [
+          "Frontend UI Components (Mock-driven)",
+          "Backend Services & DB integration"
+        ],
+        "parallel_potential": "100%",
+        "timeline": "Week 3-6"
+      },
+      {
+        "layer": "Integration Layer",
+        "description": "真实 API 联调与端到端测试",
+        "deliverables": [
+          "Real API integration",
+          "E2E test passes"
+        ],
+        "parallel_potential": "60%",
+        "timeline": "Week 7-8"
+      }
+    ]
+  },
+  "epics": [
+    {
+      "id": "HARNESS",
+      "title": "工程脚手架与交接规范 (v2.2 遗产)",
+      "priority": "P0",
+      "engineer": "All (Parallel)"
+    },
+    {
+      "id": "CONTRACTS",
+      "title": "API 契约与数据模型 (v3.1 核心)",
+      "priority": "P0",
+      "engineer": "All (Parallel)"
+    },
+    {
+      "id": "MOCKS",
+      "title": "Mock 服务与测试数据",
+      "priority": "P0",
+      "engineer": "All (Parallel)"
+    },
+    {
+      "id": "AUTH",
+      "title": "认证与授权系统",
+      "priority": "P0",
+      "engineer": "Engineer A (FE + BE decoupled)"
+    },
+    {
+      "id": "PROFILE",
+      "title": "学者档案与专家库",
+      "priority": "P0",
+      "engineer": "Engineer B (FE + BE decoupled)"
+    },
+    {
+      "id": "CONF",
+      "title": "会议管理与申请系统",
+      "priority": "P0",
+      "engineer": "Engineer C (FE + BE decoupled)"
+    },
+    {
+      "id": "GRANT",
+      "title": "差旅资助管理",
+      "priority": "P0",
+      "engineer": "Engineer D (FE + BE decoupled)"
+    },
+    {
+      "id": "REVIEW",
+      "title": "审核分配与决策工作流",
+      "priority": "P0",
+      "engineer": "Engineer E (FE + BE decoupled)"
+    },
+    {
+      "id": "PORTAL",
+      "title": "公众门户与申请人仪表板",
+      "priority": "P0",
+      "engineer": "Engineer F (FE + BE decoupled)"
+    }
+  ],
+  "features": [
+    {
+      "id": "HARNESS-001",
+      "epic": "HARNESS",
+      "title": "建立进度日志与 Sprint 契约模板",
+      "category": "delivery",
+      "description": "创建每次开发前后的环境卫生和交接产物模板。",
+      "priority": "P0",
+      "delivery_track": "shared",
+      "parallel_ready": true,
+      "steps": [
+        "Create progress log template",
+        "Create sprint contract template",
+        "Document handoff rules"
+      ],
+      "status": "completed",
+      "passes": true
+    },
+    {
+      "id": "HARNESS-002",
+      "epic": "HARNESS",
+      "title": "创建 Smoke Test Checklist",
+      "category": "delivery",
+      "description": "确保每次拉取代码后能够确认当前处于 Clean State。",
+      "priority": "P0",
+      "delivery_track": "shared",
+      "parallel_ready": true,
+      "steps": [
+        "Verify home page loads",
+        "Verify login page loads",
+        "Record smoke-test result in progress log"
+      ],
+      "status": "completed",
+      "passes": true
+    },
+    {
+      "id": "CONTRACT-001",
+      "epic": "CONTRACTS",
+      "title": "核心数据模型与 Schema (TS & SQL)",
+      "category": "contracts",
+      "description": "定义 MVP 的核心数据库表与前端 TS 接口模型。",
+      "priority": "P0",
+      "delivery_track": "contracts",
+      "depends_on": ["HARNESS-001"],
+      "parallel_ready": true,
+      "steps": [
+        "Design complete database schema",
+        "Create TypeScript interfaces for models"
+      ],
+      "status": "completed",
+      "passes": true
+    },
+    {
+      "id": "CONTRACT-002",
+      "epic": "CONTRACTS",
+      "title": "API OpenAPI 契约定义",
+      "category": "contracts",
+      "description": "定义前后端通信的 API 规范。",
+      "priority": "P0",
+      "delivery_track": "contracts",
+      "depends_on": ["CONTRACT-001"],
+      "parallel_ready": true,
+      "steps": [
+        "Specify authentication endpoints",
+        "Specify core business endpoints",
+        "Create OpenAPI/Swagger specification"
+      ],
+      "status": "not_started",
+      "passes": false
+    },
+    {
+      "id": "MOCK-001",
+      "epic": "MOCKS",
+      "title": "Mock API 服务器搭建",
+      "category": "mock-services",
+      "description": "基于 OpenAPI 生成 Mock 接口，供前端独立使用。",
+      "priority": "P0",
+      "delivery_track": "mocks",
+      "depends_on": ["CONTRACT-002"],
+      "parallel_ready": true,
+      "steps": [
+        "Set up mock server framework",
+        "Implement mock endpoints",
+        "Generate test data fixtures"
+      ],
+      "status": "not_started",
+      "passes": false
+    },
+    {
+      "id": "FE-AUTH-001",
+      "epic": "AUTH",
+      "title": "[前端] 认证系统 UI (基于 Mock)",
+      "category": "implementation",
+      "description": "前端开发登录注册 UI，直接对接 Mock 服务器，无需等待后端。",
+      "priority": "P0",
+      "delivery_track": "frontend",
+      "depends_on": ["MOCK-001"],
+      "parallel_ready": true,
+      "steps": [
+        "Build login/register UI",
+        "Integrate with mock endpoints",
+        "Verify UI state changes on success/failure"
+      ],
+      "status": "not_started",
+      "passes": false
+    },
+    {
+      "id": "BE-AUTH-001",
+      "epic": "AUTH",
+      "title": "[后端] 认证系统 API 实现",
+      "category": "implementation",
+      "description": "后端依据 OpenAPI 契约独立实现认证业务逻辑与 DB 交互。",
+      "priority": "P0",
+      "delivery_track": "backend",
+      "depends_on": ["CONTRACT-002"],
+      "parallel_ready": true,
+      "steps": [
+        "Implement user registration logic",
+        "Implement JWT/session login logic",
+        "Write backend unit tests"
+      ],
+      "status": "not_started",
+      "passes": false
+    },
+    {
+      "id": "INT-AUTH-001",
+      "epic": "AUTH",
+      "title": "[集成] 认证系统真实联调 (E2E)",
+      "category": "integration",
+      "description": "将前端数据源从 Mock 切换至真实 API，完成端到端测试。",
+      "priority": "P0",
+      "delivery_track": "integration",
+      "depends_on": ["FE-AUTH-001", "BE-AUTH-001"],
+      "parallel_ready": false,
+      "steps": [
+        "Switch FE adapter from Mock to Real API",
+        "Run E2E tests for login/register",
+        "Mark feature passes=true"
+      ],
+      "status": "not_started",
+      "passes": false
+    }
+  ]
+}

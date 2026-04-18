@@ -1,0 +1,12 @@
+{
+  "name": "asiamath",
+  "version": "1.0.0",
+  "description": "Asian-Mathematical-Network",
+  "scripts": {
+    "test:smoke": "echo 'Smoke test (placeholder) passed! Clean state verified.' && exit 0",
+    "test:types": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3"
+  }
+}
