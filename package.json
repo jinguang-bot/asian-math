@@ -4,9 +4,11 @@
   "description": "Asian-Mathematical-Network",
   "scripts": {
     "test:smoke": "echo 'Smoke test (placeholder) passed! Clean state verified.' && exit 0",
-    "test:types": "tsc --noEmit"
+    "test:types": "tsc --noEmit",
+    "mock": "npx -y mockoon-cli start --data docs/specs/openapi.yaml --port 4010"
   },
   "devDependencies": {
+    "@stoplight/prism-cli": "^5.15.9",
     "typescript": "^6.0.3"
   }
 }

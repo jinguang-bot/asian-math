@@ -4,11 +4,21 @@
 
 ## 当前项目状态
 *   **最新版本**: V4.0-Optimized
-*   **总览**: 项目刚完成了数据契约定义 (CONTRACT-001) 与 OpenAPI 规范设计 (CONTRACT-002)，准备进入 Mock 服务搭建阶段 (MOCK-001)。
+*   **总览**: 项目已完成 Mock 服务搭建阶段 (MOCK-001)，API 契约和 Mock 基础设施准备就绪，可以进行前端和后端的解耦开发。
 
 ---
 
 ## 📅 Handoff 历史记录
+
+### 2026-04-18 (Session 5)
+*   **Agent 角色**: Initializer Agent
+*   **完成 Feature**: `MOCK-001` (Mock API 服务器搭建)
+*   **变更记录**: 
+    *   在 `package.json` 中配置了 `npm run mock` 命令，使用 `mockoon-cli` 基于 OpenAPI yaml 文件启动 mock 服务器。
+    *   创建了 `mocks/fixtures` 目录结构和 `mocks/README.md`，记录了自动生成的数据规则。
+    *   测试了 Mock 服务器运行，并成功用 `curl` 验证了 `/api/v1/conferences` 接口的动态模拟响应。
+    *   更新了 `v4.0` 计划中 `MOCK-001` 的状态为 `completed` 且 `passes: true`。
+*   **下一步**: 需要执行前端与后端的并行开发。建议前端开发开始执行 `FE-AUTH-001` ([前端] 认证系统 UI 基于 Mock)，同时后端可以独立执行 `BE-AUTH-001`。
 
 ### 2026-04-18 (Session 4)
 *   **Agent 角色**: Initializer Agent
