@@ -10,6 +10,15 @@
 
 ## 📅 Handoff 历史记录
 
+### 2026-04-18 (Session 8)
+*   **Agent 角色**: Initializer Agent
+*   **完成 Feature**: 优化 `test:smoke` 脚本 (补充更新)
+*   **变更记录**: 
+    *   移除了 `package.json` 中的 `test:smoke` 占位符命令。
+    *   替换为了真实的测试指令：`npm run test:frontend && npm run test:backend`。现在每次启动前执行 `npm run test:smoke` 时，都会真实去执行前端的 `build` 以及后端的 `jest` 单元/集成测试。
+    *   成功运行了优化后的 Smoke Test，验证通过，确保后续的 Agent 能够依靠这个脚本真正检验项目的健康状态。
+*   **下一步**: 可以继续推进前端或后端的未完成模块开发，或进入集成测试阶段 `INT-AUTH-001`。
+
 ### 2026-04-18 (Session 7)
 *   **Agent 角色**: Coding Agent (Backend)
 *   **完成 Feature**: `BE-AUTH-001` ([后端] 认证系统 API 实现)
