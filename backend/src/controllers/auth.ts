@@ -1,14 +1,10 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { v4 as uuidv4 } from 'uuid';
-import { User, UserStatus } from '../../../src/types/models';
+import { PrismaClient } from '@prisma/client';
+import { UserStatus } from '../../../src/types/models';
 
-// In-memory mock database
-const users: User[] = [];
-// Also store passwords separately to avoid returning them
-const passwords: Record<string, string> = {};
-
+const prisma = new PrismaClient();
 const JWT_SECRET = process.env.JWT_SECRET || 'super_secret_key_for_development';
 
 export const register = async (req: Request, res: Response) => {
@@ -20,33 +16,33 @@ export const register = async (req: Request, res: Response) => {
       return;
     }
 
-    const existingUser = users.find(u => u.email === email);
+    const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
       res.status(400).json({ message: 'User already exists' });
       return;
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUserId = uuidv4();
     
-    const newUser: User = {
-      id: newUserId,
-      email,
-      status: 'active' as UserStatus,
-      emailVerifiedAt: null,
-      lastLoginAt: null,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    };
+    const newUser = await prisma.user.create({
+      data: {
+        email,
+        passwordHash: hashedPassword,
+        status: 'active'
+      }
+    });
 
-    users.push(newUser);
-    passwords[newUserId] = hashedPassword;
-
-    const token = jwt.sign({ userId: newUserId }, JWT_SECRET, { expiresIn: '1d' });
+    const token = jwt.sign({ userId: newUser.id }, JWT_SECRET, { expiresIn: '1d' });
 
     res.status(201).json({
       accessToken: token,
-      user: newUser
+      user: {
+        id: newUser.id,
+        email: newUser.email,
+        status: newUser.status,
+        createdAt: newUser.createdAt,
+        updatedAt: newUser.updatedAt
+      }
     });
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
@@ -62,25 +58,34 @@ export const login = async (req: Request, res: Response) => {
       return;
     }
 
-    const user = users.find(u => u.email === email);
+    const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
       res.status(401).json({ message: 'Invalid credentials' });
       return;
     }
 
-    const isMatch = await bcrypt.compare(password, passwords[user.id]);
+    const isMatch = await bcrypt.compare(password, user.passwordHash);
     if (!isMatch) {
       res.status(401).json({ message: 'Invalid credentials' });
       return;
     }
 
-    user.lastLoginAt = new Date().toISOString();
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { lastLoginAt: new Date() }
+    });
 
     const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '1d' });
 
     res.status(200).json({
       accessToken: token,
-      user
+      user: {
+        id: user.id,
+        email: user.email,
+        status: user.status,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt
+      }
     });
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
@@ -98,15 +103,20 @@ export const getMe = async (req: Request, res: Response) => {
     const token = authHeader.split(' ')[1];
     const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
 
-    const user = users.find(u => u.id === decoded.userId);
+    const user = await prisma.user.findUnique({ where: { id: decoded.userId } });
     if (!user) {
       res.status(404).json({ message: 'User not found' });
       return;
     }
 
-    // Mock returning user and empty profile
     res.status(200).json({
-      user,
+      user: {
+        id: user.id,
+        email: user.email,
+        status: user.status,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt
+      },
       profile: {
         userId: user.id,
         slug: 'mock-slug',

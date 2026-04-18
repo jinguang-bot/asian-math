@@ -1,13 +1,26 @@
 import request from 'supertest';
 import app from '../src/app';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 describe('Auth API', () => {
   let token: string;
   const testUser = {
-    email: 'test@example.com',
+    email: 'test_db_integration@example.com',
     password: 'password123',
     fullName: 'Test User'
   };
+
+  beforeAll(async () => {
+    // Clean up test user if it exists
+    await prisma.user.deleteMany({ where: { email: testUser.email } });
+  });
+
+  afterAll(async () => {
+    await prisma.user.deleteMany({ where: { email: testUser.email } });
+    await prisma.$disconnect();
+  });
 
   it('should register a new user', async () => {
     const res = await request(app)

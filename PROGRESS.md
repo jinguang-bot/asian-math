@@ -10,6 +10,17 @@
 
 ## 📅 Handoff 历史记录
 
+### 2026-04-18 (Session 10)
+*   **Agent 角色**: Coding Agent (Backend / Integration)
+*   **完成 Feature**: `BE-AUTH-001` (DB 集成补充)
+*   **变更记录**: 
+    *   在后端项目中引入了 Prisma ORM 与 SQLite 作为真实持久化方案（替代先前的内存 mock）。
+    *   根据既有 DDL 设计与 TS `models.ts` 抽象，创建了 `schema.prisma` 并定义了 `User` 表。
+    *   执行了 `npx prisma migrate dev` 跑通了数据库建表流程。
+    *   重构了 `src/controllers/auth.ts`，将所有用户的注册 (`register`)、登录 (`login`) 和查询 (`getMe`) 操作全部接入 Prisma Client，实现了真实的 DB 持久化写入与读取。
+    *   更新了 `jest` 配置并跑通了所有集成测试，测试脚本会在运行前后清理 DB 里的测试数据。
+*   **下一步**: 可以进入下一个模块开发（比如 `FE-PROFILE-001` 或 `BE-PROFILE-001`）。
+
 ### 2026-04-18 (Session 9)
 *   **Agent 角色**: Coding Agent (Integration)
 *   **完成 Feature**: `INT-AUTH-001` ([集成] 认证系统真实联调 (E2E))
