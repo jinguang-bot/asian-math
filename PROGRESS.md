@@ -4,11 +4,22 @@
 
 ## 当前项目状态
 *   **最新版本**: V4.0-Optimized
-*   **总览**: 项目刚完成脚手架纪律设定 (HARNESS-001)，准备进行环境 Smoke Test 配置 (HARNESS-002) 和数据契约定义 (CONTRACT-001)。
+*   **总览**: 项目刚完成了数据契约定义 (CONTRACT-001) 与 OpenAPI 规范设计 (CONTRACT-002)，准备进入 Mock 服务搭建阶段 (MOCK-001)。
 
 ---
 
 ## 📅 Handoff 历史记录
+
+### 2026-04-18 (Session 4)
+*   **Agent 角色**: Initializer Agent
+*   **完成 Feature**: `CONTRACT-002` (API OpenAPI 契约定义)
+*   **变更记录**: 
+    *   基于 `src/types/models.ts`，创建了完整的 OpenAPI 3.0.3 规范文档 `docs/specs/openapi.yaml`。
+    *   定义了 Authentication 相关的 endpoints (`/auth/login`, `/auth/register`, `/auth/me`)。
+    *   定义了核心业务 endpoints（例如 `/profiles/me`, `/conferences`），并集成了所有的 TS 枚举和 Schema。
+    *   通过 `@redocly/cli` 工具对 `openapi.yaml` 进行了语法 lint 校验，保证 API 描述的合法性。
+    *   更新了 `v4.0` 计划中 `CONTRACT-002` 的状态为 `completed` 且 `passes: true`。
+*   **下一步**: 需要执行 `MOCK-001` (Mock API 服务器搭建)，基于今天生成的 `openapi.yaml` 来配置 Mock 服务（可使用 Prism 或 json-server），供前端独立调用。
 
 ### 2026-04-18 (Session 3)
 *   **Agent 角色**: Initializer Agent

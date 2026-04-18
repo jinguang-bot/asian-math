@@ -36,6 +36,7 @@ Agent 不应试图一次性完成所有任务，而是采用“倒班制”（Sh
     *   Agent 会话结束（或被中断）前，**必须**输出一份总结日志。
     *   如果修改了 API，必须在对应的 `docs/specs/` 文件或临时文件中留下记录。
     *   如果引入了新的环境变量，必须写明在 `.env.example`。
+    *   **Git Commit & Push**: 在本地日志更新完毕后，必须使用 `git commit -am "feat: <feature_id> description"` 进行本地提交，并执行 `git push` 同步到远程仓库，确保进度不丢失。
 
 ## 3. 开发会话的标准流程 (Standard Session Flow)
 

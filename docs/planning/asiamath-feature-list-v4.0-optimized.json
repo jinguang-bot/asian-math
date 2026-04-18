@@ -192,8 +192,8 @@
         "Specify core business endpoints",
         "Create OpenAPI/Swagger specification"
       ],
-      "status": "not_started",
-      "passes": false
+      "status": "completed",
+      "passes": true
     },
     {
       "id": "MOCK-001",
