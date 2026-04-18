@@ -37,12 +37,47 @@ We follow the **Four-layer staggered parallel development** model. When claiming
 4. **Handoff:** 
    Update your feature's status in `asiamath-feature-list-v4.0-optimized.json` to `"status": "completed"` and `"passes": true`. Finally, append your session summary to `PROGRESS.md`.
 
-## 📂 Key Directories
+## 📂 Full Repository Structure & Roles
 
-*   `docs/planning/` - The source of truth for all pending and completed Features.
-*   `docs/specs/` - The source of truth for the OpenAPI Swagger contract. **(Always read this before coding an API)**
-*   `frontend/` - React SPA codebase.
-*   `backend/` - Node.js Express API codebase.
-*   `backend/prisma/schema.prisma` - Database schema definitions.
+This repository is more than just code. It contains the product requirements, system contracts, shared types, and engineering rules that make distributed development possible.
+
+Here is the layout and what each folder is used for:
+
+```text
+/ASIAN-MATH
+├── 📄 AGENT_HARNESS.md         # 🤖 MANDATORY rules & discipline for AI Agents (The "Shift Work" model)
+├── 📄 PROGRESS.md              # 📝 Changelog & Handoff log (Updated after EVERY feature completion)
+├── 📄 SMOKE_TEST_CHECKLIST.md  # ✅ Manual/Automated Smoke Test guidelines
+├── 📄 package.json             # ⚙️ Root scripts (e.g., `npm run test:smoke`, `npm run mock`)
+│
+├── 📁 docs/                    # 📚 The single source of truth for the project
+│   ├── planning/               # 🗺️ Feature List (JSON) & Sprint Contracts (Who does what and when)
+│   ├── product/                # 💡 PRDs (Product Requirements Documents)
+│   └── specs/                  # 📜 System Contracts (OpenAPI Swagger YAML, Architecture Specs)
+│
+├── 📁 database/                # 🗄️ Raw SQL definitions
+│   └── ddl/                    # 🏗️ DDL (Data Definition Language) files for creating tables
+│
+├── 📁 src/                     # 🔗 Shared Code (Used by BOTH frontend and backend)
+│   └── types/                  # 🧱 Shared TypeScript models (e.g., `models.ts` defining User, Profile)
+│
+├── 📁 mocks/                   # 🤡 Mock API server configurations and test data fixtures
+│
+├── 📁 frontend/                # 💻 React + Vite + TS (Frontend App)
+│   ├── src/pages/              # 📄 Zero-Conflict Routing: Add a `.tsx` here, it auto-mounts
+│   └── vite.config.ts          # 🔌 Vite config (handles proxying to mock/backend servers)
+│
+└── 📁 backend/                 # ⚙️ Node.js + Express + Prisma (Backend API)
+    ├── prisma/                 # 🗃️ Prisma ORM schema & SQLite database file
+    ├── src/routes/             # 🛣️ Zero-Conflict Routing: Add a `.ts` here, it auto-mounts
+    ├── src/controllers/        # 🧠 Business logic (called by routes)
+    └── tests/                  # 🧪 Jest E2E and Unit Tests
+```
+
+### 🚦 Where do I start? (For New Engineers)
+1. **Read the Rules**: Read `AGENT_HARNESS.md` to understand how we work (One Feature at a time, Smoke Tests).
+2. **Find a Task**: Open `docs/planning/asiamath-feature-list-v4.0-optimized.json` and find a feature marked `"status": "not_started"`.
+3. **Read the Contract**: Check `docs/specs/openapi.yaml` and `src/types/models.ts` to understand the data structure you need to implement.
+4. **Develop**: Go to `frontend/` or `backend/` and start coding.
 
 Happy coding! If you follow the isolated file structure, you will never see a merge conflict.
