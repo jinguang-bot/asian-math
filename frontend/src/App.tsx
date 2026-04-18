@@ -1,16 +1,30 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
+
+// Auto-loader for pages using Vite's glob import
+const pages = import.meta.glob('./pages/*.tsx', { eager: true });
+
+const routes = Object.keys(pages).map((path) => {
+  const name = path.match(/\.\/pages\/(.*)\.tsx$/)?.[1];
+  if (!name) return null;
+  
+  // Convert filename to route path (e.g., Login -> /login, Dashboard -> /dashboard)
+  const routePath = `/${name.toLowerCase()}`;
+  const Component = (pages[path] as any).default;
+  
+  return {
+    path: routePath,
+    Component
+  };
+}).filter(Boolean);
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        {routes.map((route: any) => (
+          <Route key={route.path} path={route.path} element={<route.Component />} />
+        ))}
       </Routes>
     </Router>
   );
